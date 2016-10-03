@@ -1,7 +1,6 @@
 import React, { PropTypes, Component } from 'react'
 import * as d3 from 'd3'
 import { Button } from 'react-bootstrap'
-import '../../styles/event-page.css'
 import Payment from './Payment'
 import '../../styles/paymentWidget.css'
 
@@ -11,14 +10,9 @@ class PaymentWidget extends Component {
     super()
   }
 
-  getData () {
+  getDataList () {
     const { data } = this.props
-    this.printChart(this.filterData(data))
     return data.map((item, index) => <Payment key={index} values={item}>{item.sector} </Payment>)
-  }
-
-  filterData (data) {
-    return data.filter((d) => d.amount != null)
   }
 
   printChart (data) {
@@ -29,22 +23,25 @@ class PaymentWidget extends Component {
     .enter()
       .append('div')
       .style('width', (d) => {
-        let value = scalingFunction(scalingFunction(parseFloat(d.amount)))
+        const amount = d.mean != null ? parseFloat(d.mean) : 0
+        let value = scalingFunction(scalingFunction(amount))
         if (value == null || isNaN(value)) {
           value = 0
         }
         return `${value}px`
       })
-      .text((d) => d.amount)
+      .text((d) => {
+        const amount = d.mean != null ? Math.round(d.mean * 100) / 100 : 0
+        return `${d.name} - ${amount} €`
+      })
   }
 
   render () {
-    const { fetchDataset } = this.props
+    const { data, fetchDataset } = this.props
+    this.printChart(data)
     return (
       <div>
         <h4><b>Data</b></h4>
-        {this.getData()}
-        <p>-------</p>
         <p><Button bsStyle="success" onClick={fetchDataset}>Fetch data</Button></p>
         <div className="chart" />
       </div>
