@@ -22,7 +22,17 @@ class PaymentWidget extends Component {
         .data(data)
     .enter()
       .append('div')
-      .style('width', (d) => {
+      .attr('class', 'col-md-2')
+      .style('height', (d) => 0)
+      .style('margin-top', (d) => '500px')
+      .html((d) => {
+        const amount = d.mean != null ? Math.round(d.mean * 100) / 100 : 0
+        return `<p><b>${amount} €</b></p><p class="title">${d.name}</p>`
+      })
+      .transition()
+      .delay((d, i) => i * 50)
+      .duration(200)
+      .style('height', (d) => {
         const amount = d.mean != null ? parseFloat(d.mean) : 0
         let value = scalingFunction(scalingFunction(amount))
         if (value == null || isNaN(value)) {
@@ -30,9 +40,15 @@ class PaymentWidget extends Component {
         }
         return `${value}px`
       })
-      .text((d) => {
-        const amount = d.mean != null ? Math.round(d.mean * 100) / 100 : 0
-        return `${d.name} - ${amount} €`
+      .style('margin-top', (d) => {
+        const amount = d.mean != null ? parseFloat(d.mean) : 0
+        let value = scalingFunction(scalingFunction(amount))
+        if (value == null || isNaN(value) || value === 0) {
+          value = 494
+        } else {
+          value = 500 - value
+        }
+        return `${value}px`
       })
   }
 
@@ -41,8 +57,9 @@ class PaymentWidget extends Component {
     this.printChart(data)
     return (
       <div>
-        <h4><b>Data</b></h4>
         <p><Button bsStyle="success" onClick={fetchDataset}>Fetch data</Button></p>
+        <br />
+        <h4><b>Consumos medios</b></h4>
         <div className="chart" />
       </div>
     )
