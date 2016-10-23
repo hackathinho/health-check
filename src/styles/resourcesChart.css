@@ -1,0 +1,10 @@
+div#incident-chart {
+    float: right;
+}
+div#homicide-chart {
+    float: right;
+}
+.dc-chart .deselected circle {
+  stroke: none;
+  fill: rgba(200,0,0,0.2);
+}

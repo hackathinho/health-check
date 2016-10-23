@@ -18,6 +18,6 @@ export default class URL {
   }
 
   fetchDataset () {
-    return `${this.baseUrl()}/dataset/mini`
+    return `${this.baseUrl()}/dataset`
   }
 }

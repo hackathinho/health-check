@@ -1,11 +1,11 @@
 import React from 'react'
-import PaymentWidgetContainer from '../../containers/PaymentWidgetContainer'
+import HealthResourcesContainer from '../../containers/HealthResourcesContainer'
 
 function DataPage () {
   return (
     <div>
       <div>
-        <PaymentWidgetContainer />
+        <HealthResourcesContainer />
       </div>
     </div>
   )
