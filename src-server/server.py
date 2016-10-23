@@ -61,7 +61,7 @@ def recursos_materiales():
 
     region = request.args.get('region')
     region = None if (region is None) else [region]
-    if region[0] == 'Corunha':
+    if (region is not None) and (region[0] == 'Corunha'):
         region = ['A Coruna']
 
     from_year,to_year = year_filter(request.args.get('fromYear'),request.args.get('toYear'))
