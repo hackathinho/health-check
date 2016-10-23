@@ -3,6 +3,9 @@
 
 import pandas as pd 
 from flask import Flask,request
+import recursos_materiales as rmateriales
+
+
 # -- defunciones --
 print "-- cargamos defunciones --"
 defuncionesdf = pd.read_csv("http://www.ige.eu/igebdt/igeapi/datos/880",encoding="iso-8859-1")
@@ -40,6 +43,18 @@ def defunciones(region,poblacion):
     from_year,to_year = year_filter(request.args.get('fromYear'),request.args.get('toYear'))
     filtered = df[(df.Tempo <= to_year) & (df.Tempo >=from_year) & (df.Sexo == poblacion) & (df.Espazo == region) & (df.Idade==idade)]
     return filtered.to_json(force_ascii=False)
+
+
+@app.route("/recursos_materiales/", methods = ['GET'])
+def recursos_materiales():
+    recurso = request.args.get('recurso')
+    recurso = None if (recurso is None) else [recurso] 
+
+    region = request.args.get('region')
+    region = None if (region is None) else [region]
+
+    return rmateriales.filtrar(recursos=recurso, region=region) 
+
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0',debug =True)
