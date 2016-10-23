@@ -3,6 +3,7 @@ import * as dc from 'dc'
 import * as d3 from 'd3'
 import crossfilter from 'crossfilter'
 import '../../styles/resourcesChart.css'
+import '../../styles/common.css'
 
 class ResourcesChart extends Component {
 
@@ -171,9 +172,11 @@ class ResourcesChart extends Component {
 
   render () {
     this.printChart()
-    console.log('priiint')
+    console.log('print')
     return (
-      <div>
+      <div className="element-container">
+        <h2>Health Check</h2>
+        <br />
         <div id="incident-chart">
           <strong>Incidents by Year</strong>
           <div className="clearfix" />
