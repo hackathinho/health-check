@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import pandas as pd 
+import json
 from flask import Flask,request
 # -- defunciones --
 print "-- cargamos defunciones --"
@@ -13,6 +14,7 @@ def filtra_primer_valor(str_idade):
         return str_idade[0:str_idade.index(" ")]
     except ValueError:
         return str_idade
+
 defuncionesdf.Idade = defuncionesdf.Idade.apply(lambda x: filtra_primer_valor(x))
 
 app = Flask(__name__)
@@ -39,7 +41,14 @@ def defunciones(region,poblacion):
     idade = "Total" if idade is None or (not idade.isdigit() and idade != "Total") else idade 
     from_year,to_year = year_filter(request.args.get('fromYear'),request.args.get('toYear'))
     filtered = df[(df.Tempo <= to_year) & (df.Tempo >=from_year) & (df.Sexo == poblacion) & (df.Espazo == region) & (df.Idade==idade)]
-    return filtered.to_json(force_ascii=False)
+    response = []
+    for yeardf in df.groupby("Tempo"):
+        key,dfyear = yeardf
+        dicc = {"anho":key,"valores":[]}
+        valoresList = [{"idade":row["Idade"],"sexo":row["Sexo"],"espazo":row["Espazo"],"numero":row["DatoN"]} for index,row in dfyear.iterrows()]
+        dicc["valores"]=valoresList
+        response.append(dicc)
+    return json.dumps(response)
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0',debug =True)
