@@ -18,7 +18,7 @@ function MainToolBar (props) {
               <span className="icon-bar" />
               <span className="icon-bar" />
             </button>
-            <Link className="navbar-brand" to="/">Adasmus&trade;</Link>
+            <Link className="navbar-brand" to="/">Health Check&trade;</Link>
           </div>
           <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul className="nav navbar-nav">

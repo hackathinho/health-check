@@ -1,6 +1,6 @@
-# Adasmus
+# Health Check
 
-This is the web application frontend for Adasmus app.
+This is the web application frontend for Health Check.
 
 ## Usage
 
