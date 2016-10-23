@@ -61,9 +61,22 @@ def recursos_materiales():
 
     region = request.args.get('region')
     region = None if (region is None) else [region]
+    if region[0] == 'Corunha':
+        region = ['A Coruna']
 
-    return rmateriales.filtrar(recursos=recurso, region=region) 
+    from_year,to_year = year_filter(request.args.get('fromYear'),request.args.get('toYear'))
+    tempo = range(from_year, to_year+1)
 
+    filtrado = rmateriales.filtrar(recursos=recurso, region=region, tempo=tempo) 
+
+    response = []
+    for yeardf in filtrado.groupby("Tempo"):
+        key,dfyear = yeardf
+        dicc = {"anho":key, "valores":[]}
+        valoresList = [{"recursos_materiais":row["Recursos materiais"], "espazo":row["Espazo"], "numero":row["DatoN"]} for index,row in dfyear.iterrows()]
+        dicc["valores"]=valoresList
+        response.append(dicc)
+    return json.dumps(response)
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0',debug =True)

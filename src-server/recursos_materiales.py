@@ -35,6 +35,7 @@ def filtrar(tempo=None, codTempo=None, recursos=None, codRegion=None, region=Non
         indices = indices + i
     parciales.append(reduce(f_or, indices, False))
 
+    indices = []
     if codTempo is not None:
         try:
             i = [datos['CodTempo'] == cod for cod in codTempo]
@@ -100,8 +101,8 @@ def filtrar(tempo=None, codTempo=None, recursos=None, codRegion=None, region=Non
     parciales.append(reduce(f_or, indices, False))
 
     final = reduce(f_and, parciales, True)
-    #return datos[final]
-    return datos[final].to_json(force_ascii=False)
+    return datos[final]
+    #return datos[final].to_json(force_ascii=False)
 
 
 
